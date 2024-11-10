@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from TALLER_APP.models import Producto
+from base_app.models import Producto
 
 def index(request):
     productos_recientes = Producto.objects.all()[:8]  # Ejemplo: los 8 productos más recientes
@@ -12,3 +12,5 @@ def index(request):
         'productos_descuento': productos_descuento,
     }
     return render(request, 'index.html', context)
+
+
