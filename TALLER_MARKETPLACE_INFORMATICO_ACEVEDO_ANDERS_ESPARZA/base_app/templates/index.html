@@ -48,6 +48,8 @@
       color: #000;
     }
   </style>
+  {% load math_filters %}
+
 </head>
 <body>
 
@@ -103,7 +105,7 @@
               <img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}">
               <div class="card-body">
                 <h5 class="card-title">{{ producto.nombre }}</h5>
-                <p class="card-text">{{producto.previo}}</p>
+                <p class="card-text">${{producto.precio}}</p>
 
               </div>
             </div>
@@ -120,7 +122,7 @@
               <img src="{{ producto.imagen }}" class="card-img-top" alt="{{ producto.nombre }}">
               <div class="card-body">
                 <h5 class="card-title">{{ producto.nombre }}</h5>
-                <p class="card-text">{{producto.previo}}</p>
+                <p class="card-text">${{producto.precio}}</p>
               </div>
             </div>
           </div>
@@ -137,7 +139,7 @@
       <span class="visually-hidden">Siguiente</span>
     </button>
   </div>
-  <!--  En Caso de que haya problemas con la bae de datos dejamos estos puntos como dummies-->
+  <!--  En Caso de que haya problemas con la base de datos dejamos estos puntos como dummies-->
   {%else %}
   <div id="recentProductsCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -245,48 +247,61 @@
   </div>
 </div>
 
-<!-- Sección de Categorías Populares -->
-<div class="container mt-5">
-  <h3 class="text-center mb-4">Categorías Populares</h3>
-  <div class="row text-center">
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Notebook Gamer</h5>
-          <a href="#" class="btn btn-primary">Ver Publicaciones</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Tarjetas de Video Gamer</h5>
-          <a href="#" class="btn btn-primary">Ver Publicaciones</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Monitores</h5>
-          <a href="#" class="btn btn-primary">Ver Publicaciones</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">RAM</h5>
-          <a href="#" class="btn btn-primary">Ver Publicaciones</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Carrusel - Artículos que bajaron de precio -->
 <div class="container mt-5">
-  <h3 class="text-center mb-4">Artículos que bajaron de precio</h3>
+  <h3 class="text-center mb-4">Artículos en Descuento</h3>
+  {% if productos_descuento_start %}
+  <div id="discountedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <!-- Slide 1 -->
+      <div class="carousel-item active">
+        <div class="row">
+          {% for producto in productos_descuento_start %}
+          <div class="col-md-3">
+            <div class="card">
+              {% with descuento=producto.precio|multiply:producto.descuento %}
+              <div class="badge bg-warning text-dark">Bajó ${{descuento}}</div>
+              <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 1">
+              <div class="card-body">
+                <h5 class="card-title">{{producto.nombre}}</h5>
+                <p class="card-text">${{producto.precio|substract:descuento}}</p>
+              </div>
+              {%endwith%}
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+      <!-- Slide 2 -->
+      <div class="carousel-item">
+        <div class="row">
+          {% for producto in productos_descuento_end %}
+          <div class="col-md-3">
+            <div class="card">
+              {% with descuento=producto.precio|multiply:producto.descuento %}
+              <div class="badge bg-warning text-dark">Bajó ${{descuento}}</div>
+              <img src="https://via.placeholder.com/150" class="card-img-top" alt="Producto 1">
+              <div class="card-body">
+                <h5 class="card-title">{{producto.nombre}}</h5>
+                <p class="card-text">${{producto.precio|substract:descuento}}</p>
+              </div>
+              {%endwith%}
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#discountedProductsCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#discountedProductsCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+  {% else %}
   <div id="discountedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <!-- Slide 1 -->
@@ -389,6 +404,7 @@
       <span class="visually-hidden">Siguiente</span>
     </button>
   </div>
+  {% endif %}
   <button class="btn btn-outline-primary btn-more mt-3">Ver más</button>
 </div>
 

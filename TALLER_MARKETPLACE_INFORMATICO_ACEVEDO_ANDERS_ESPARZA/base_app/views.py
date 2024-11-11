@@ -3,15 +3,13 @@ from base_app.models import Producto
 
 def index(request):
     productos_recientes = Producto.objects.all()[:6]  # Para el Carrousel, 6  productos más recientes
-        ## TODO: Que hace a una categoria popular? Que es una categoria? Asumiendo por ahora los datos del Navbar 
-    categorias_populares = Producto.objects.values('id_cate').distinct()[:4]  # 
     productos_descuento = Producto.objects.filter(descuento__isnull=False)[:8]  # Ejemplo: productos con descuento
 
     context = {
         'productos_recientes_start': productos_recientes[:3],
         'productos_recientes_end': productos_recientes[3:],
-        'categorias_populares': categorias_populares,
-        'productos_descuento': productos_descuento,
+        'productos_descuento_start': productos_descuento[4:],
+        'productos_descuento_end': productos_descuento[:4],  
     }
     return render(request, 'index.html', context)
 
