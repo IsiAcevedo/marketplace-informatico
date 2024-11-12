@@ -27,12 +27,12 @@ def productos_filtrados(request, categoria):
     }
     return render(request, 'productos.html', context)
 
-def detalle_producto(request, id_producto):
-    producto = Producto.objects.get(id=id_producto)
+def detalle_producto(request, id):
+    producto = Producto.objects.get(id_prod=id)
     context = {
         'producto': producto,
     }
-    return render(request, 'detalle_producto.html', context)
+    return render(request, 'detalle_prod.html', context)
 
 def publicar(request):
     ### TODO: Cambiar nombre?
