@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
 from base_app.models import Producto, Categoria, Marca, Condicion_Producto
+from base_app.forms import PublicarProductoForm
 
 def index(request):
     productos_recientes = Producto.objects.all()[:6]  # Para el Carrousel, 6  productos más recientes
@@ -35,16 +38,37 @@ def detalle_producto(request, id):
     return render(request, 'detalle_prod.html', context)
 
 def publicar(request):
-    categorias = Categoria.objects.all()
-    marcas = Marca.objects.all()
-    condiciones = Condicion_Producto.objects.all()
+    if request.method == 'POST':
+        form = PublicarProductoForm(request.POST)
+        if form.is_valid():
+            # Procesar los datos del formulario
+            producto = Producto.objects.create({
+                'nombre':form.cleaned_data['nombre'] ,
+                'descripcion': form.cleaned_data['descripcion'],
+                'precio': form.cleaned_data['precio'],
+                'descuento': form.cleaned_data['descuento'],
+                'imagen': form.cleaned_data['imagen'],
+                'id_mar': form.cleaned_data['marca'],
+                'id_cate': form.cleaned_data['categoria'],
+                'id_cond': form.cleaned_data['condicion_producto'],  
+            })
 
-    context = {
-        'categorias': categorias,
-        'marcas': marcas,
-        'condiciones': condiciones,
-    }
-    return render(request, 'publicar.html', context)
+            print(f'Producto {producto["nombre"]} creado.')
+            return HttpResponseRedirect("/productos")
+    else:
+        form = PublicarProductoForm()
+
+        categorias = Categoria.objects.all()
+        marcas = Marca.objects.all()
+        condiciones = Condicion_Producto.objects.all()
+
+        context = {
+            'categorias': categorias,
+            'marcas': marcas,
+            'condiciones': condiciones,
+            'form': form,
+        }
+        return render(request, 'publicar.html', context)
 
 def perfil_cliente(request):
     return render(request, 'perfil/perfil_cliente.html')
