@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from base_app.models import Producto, Categoria
+from base_app.models import Producto, Categoria, Marca, Condicion_Producto
 
 def index(request):
     productos_recientes = Producto.objects.all()[:6]  # Para el Carrousel, 6  productos más recientes
@@ -35,8 +35,16 @@ def detalle_producto(request, id):
     return render(request, 'detalle_prod.html', context)
 
 def publicar(request):
-    ### TODO: Cambiar nombre?
-    return render(request, 'publicar.html')
+    categorias = Categoria.objects.all()
+    marcas = Marca.objects.all()
+    condiciones = Condicion_Producto.objects.all()
+
+    context = {
+        'categorias': categorias,
+        'marcas': marcas,
+        'condiciones': condiciones,
+    }
+    return render(request, 'publicar.html', context)
 
 def perfil_cliente(request):
     return render(request, 'perfil/perfil_cliente.html')
