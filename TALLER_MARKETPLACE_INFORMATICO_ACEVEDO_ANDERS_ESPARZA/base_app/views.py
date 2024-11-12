@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from base_app.models import Producto
+from base_app.models import Producto, Categoria
 
 def index(request):
     productos_recientes = Producto.objects.all()[:6]  # Para el Carrousel, 6  productos más recientes
@@ -15,6 +15,13 @@ def index(request):
 
 def productos(request):
     productos = Producto.objects.all()
+    context = {
+        'productos': productos,
+    }
+    return render(request, 'productos.html', context)
+def productos_filtrados(request, categoria):
+    categoriaProducto = Categoria.objects.get(nom_cate=categoria)
+    productos = Producto.objects.filter(id_cate=categoriaProducto).all()
     context = {
         'productos': productos,
     }
