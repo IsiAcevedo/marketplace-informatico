@@ -141,75 +141,61 @@
         </div>
     </nav>
   
+    <form action="/publicar" method="POST" enctype="multipart/form-data">
+        <!-- Contenedor principal -->
+        <div class="container">
+            {% csrf_token %} 
 
-    <!-- Contenedor principal -->
-    <div class="container">
-        <!-- Panel izquierdo: carga de imágenes y nombre de publicación -->
-        <div class="left-panel">
-            <div class="image-upload" onclick="document.getElementById('file-input').click()">
-                Seleccionar Imágenes
-                <input id="file-input" type="file" accept="image/*" multiple onchange="validateFiles()" style="display: none;">
+            <!-- Panel izquierdo: carga de imágenes y nombre de publicación -->
+            <div class="left-panel">
+                <div class="image-upload" onclick="document.getElementById('file-input').click()">
+                    Seleccionar Imágenes
+                    <input id="file-input" type="file" accept="image/*" multiple onchange="validateFiles()" style="display: none;">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    {{form.nombre}}
+                </div>
+                <div class="form-group">
+                    <label for="precio">Precio</label>
+                    {{form.precio}}
+                    </div>
+                <div class="form-group">
+                    <label for="precio">descuento</label>
+                    {{form.descuento}}
+                     </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripcion</label>
+                    {{form.descripcion}}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="nombre">Nombre de la publicación</label>
-                <input type="text" id="nombre" placeholder="Nombre de la publicación">
-            </div>
-            <div class="form-group">
-                <label for="descripcion">Escribe una descripción aquí</label>
-                <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+
+            <!-- Panel derecho: detalles del producto -->
+            <div class="right-panel">
+                <h3>Detalles de Producto</h3>
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    {{form.categoria}}
+                </div>
+                <div class="form-group">
+                    <label for="marca">Marca</label>
+                    {{form.marca}}
+                </div>
+                <div class="form-group">
+                    <label for="condicion">Condicion</label>
+                    {{form.condicion_producto}}
+
+                </div>
+                <button class="btn-save" type="submit">Guardar</button>
             </div>
         </div>
+    </form>
 
-        <!-- Panel derecho: detalles del producto -->
-        <div class="right-panel">
-            <h3>Detalles de Producto</h3>
-            <div class="form-group">
-                <label for="producto">Producto</label>
-                <select id="producto">
-                    <option>Selecciona un producto</option>
-                    <option>Producto 1</option>
-                    <option>Producto 2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="entrega">Entrega</label>
-                <select id="entrega">
-                    <option>Selecciona el tipo de entrega</option>
-                    <option>Envío</option>
-                    <option>Recogida</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="color">Color</label>
-                <select id="color">
-                    <option>Selecciona el color</option>
-                    <option>Rojo</option>
-                    <option>Azul</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="marca">Marca</label>
-                <select id="marca">
-                    <option>Selecciona la marca</option>
-                    <option>Marca 1</option>
-                    <option>Marca 2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="fecha">Fecha</label>
-                <input type="date" id="fecha">
-            </div>
-            <div class="form-group">
-                <label for="medidas">Medidas</label>
-                <input type="text" id="medidas" placeholder="Medidas del producto">
-            </div>
-            <div class="form-group">
-                <label for="otro">Otro</label>
-                <input type="text" id="otro" placeholder="Detalles adicionales">
-            </div>
-            <button class="btn-save">Guardar</button>
-        </div>
-    </div>
+    {%if errors%}
+        <span style="color:red">{{errors}}</span>
+    {%endif%}
+
+ 
 
     <!-- JavaScript para validar la cantidad de archivos -->
    <!--  <script>

@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from base_app.models import Producto, Categoria
+from django.http import HttpResponseRedirect
+
+from base_app.models import Producto, Categoria, Marca, Condicion_Producto
+from base_app.forms import PublicarProductoForm
 
 def index(request):
     productos_recientes = Producto.objects.all()[:6]  # Para el Carrousel, 6  productos más recientes
@@ -35,8 +38,45 @@ def detalle_producto(request, id):
     return render(request, 'detalle_prod.html', context)
 
 def publicar(request):
-    ### TODO: Cambiar nombre?
-    return render(request, 'publicar.html')
+    if request.method == 'POST':
+        form = PublicarProductoForm(request.POST)
+        print(f'Viendo si es valida la Form{form.is_valid()}')
+
+        if form.is_valid():
+            # Procesar los datos del formulario
+            marca = Marca.objects.get(id_mar=form.cleaned_data['marca'])
+            categoria = Categoria.objects.get(id_cate=form.cleaned_data['categoria'])
+            condicion = Condicion_Producto.objects.get(id_cond=form.cleaned_data['condicion_producto'])
+            producto = Producto.objects.create(
+                nombre=form.cleaned_data['nombre'] ,
+                descripcion = form.cleaned_data['descripcion'],
+                precio = form.cleaned_data['precio'],
+                descuento = form.cleaned_data['descuento'],
+                imagen = 'https://placehold.co/600x400',
+                id_mar= marca,
+                id_cate=categoria,
+                id_cond= condicion,  
+            )
+
+            print(f'Producto  creado.')
+            return HttpResponseRedirect("/productos")
+        else:
+            print(f'Hubo un error en el formulario')
+            errors = form.errors
+            context = {
+                'form': form,
+                'errors': errors,
+            }
+            return render(request, 'publicar.html', context)
+
+    else:
+        form = PublicarProductoForm()
+
+
+        context = {
+            'form': form,
+        }
+        return render(request, 'publicar.html', context)
 
 def perfil_cliente(request):
     return render(request, 'perfil/perfil_cliente.html')
