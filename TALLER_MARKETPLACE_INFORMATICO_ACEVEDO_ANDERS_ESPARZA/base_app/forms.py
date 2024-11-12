@@ -14,15 +14,6 @@ def get_categorias():
 
 class PublicarProductoForm(forms.Form):
 
-    categorias = get_categorias()
-    marcas = get_marcas()
-    condiciones = get_condiciones()
-
-    manual_category = {
-        "algo": "Algorith",
-        "otra": "otraCosa",
-        "fr": "For Real!"
-    }
 
     nombre = forms.CharField(label="nombre", max_length=50)
     descripcion = forms.CharField(label="nombre", max_length=50)
