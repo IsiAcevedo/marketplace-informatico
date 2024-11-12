@@ -152,6 +152,7 @@
   </div>
   
   <!-- Producto 1 -->
+  {%for producto in productos%}
   <div class="product-card">
     <div class="row">
       <div class="col-md-4">
@@ -160,11 +161,11 @@
       <div class="col-md-8">
         <div class="d-flex justify-content-between">
           <div>
-            <h5>Nombre de la publicación</h5>
-            <p>Descripción del producto</p>
+            <h5>{{ producto.nombre }}</h5>
+            <p>{{producto.descripcion}}</p>
           </div>
           <div class="text-end">
-            <p>CLP $123.456</p>
+            <p>${{producto.precio}}</p>
             <a href="#" class="btn btn-outline-success">Comprar</a>
             <a href="#" class="btn btn-outline-success">Guardar</a>
           </div>
@@ -176,12 +177,14 @@
           </div>
           <div>
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#contactModal">Contactar al vendedor</button>
-            <a href="detalle_prod.html" class="btn btn-outline-primary">Ver detalles</a>
+            <a href="/producto/{{producto.id_prod}}" class="btn btn-outline-primary">Ver detalles</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {%endfor%}
+
 </div>
 
 <!-- Modal para contactar al vendedor -->
