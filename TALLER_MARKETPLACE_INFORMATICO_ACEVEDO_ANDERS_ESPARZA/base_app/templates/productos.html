@@ -61,14 +61,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="home">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link" href="productos">Productos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Tecnología</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Hardware</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Periféricos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Otros</a></li>
+        <li class="nav-item"><a class="nav-link" href="/home">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos">Productos</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos/Tecnologia">Tecnología</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos/Hardware">Hardware</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos/Perifericos">Periféricos</a></li>
+        <li class="nav-item"><a class="nav-link" href="/productos/Otros">Otros</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Ayuda</a></li>
-        <li class="nav-item"><a class="nav-link" href="publicar">Publicar</a></li>
+        <li class="nav-item"><a class="nav-link" href="/publicar">Publicar</a></li>
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Busca tu producto" aria-label="Search">
@@ -152,6 +152,7 @@
   </div>
   
   <!-- Producto 1 -->
+  {%for producto in productos%}
   <div class="product-card">
     <div class="row">
       <div class="col-md-4">
@@ -160,11 +161,11 @@
       <div class="col-md-8">
         <div class="d-flex justify-content-between">
           <div>
-            <h5>Nombre de la publicación</h5>
-            <p>Descripción del producto</p>
+            <h5>{{ producto.nombre }}</h5>
+            <p>{{producto.descripcion}}</p>
           </div>
           <div class="text-end">
-            <p>CLP $123.456</p>
+            <p>${{producto.precio}}</p>
             <a href="#" class="btn btn-outline-success">Comprar</a>
             <a href="#" class="btn btn-outline-success">Guardar</a>
           </div>
@@ -176,12 +177,14 @@
           </div>
           <div>
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#contactModal">Contactar al vendedor</button>
-            <a href="detalle_prod.html" class="btn btn-outline-primary">Ver detalles</a>
+            <a href="/producto/{{producto.id_prod}}" class="btn btn-outline-primary">Ver detalles</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+  {%endfor%}
+
 </div>
 
 <!-- Modal para contactar al vendedor -->
