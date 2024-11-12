@@ -40,32 +40,40 @@ def detalle_producto(request, id):
 def publicar(request):
     if request.method == 'POST':
         form = PublicarProductoForm(request.POST)
+        print(f'Viendo si es valida la Form{form.is_valid()}')
+
         if form.is_valid():
             # Procesar los datos del formulario
-            producto = Producto.objects.create({
-                'nombre':form.cleaned_data['nombre'] ,
-                'descripcion': form.cleaned_data['descripcion'],
-                'precio': form.cleaned_data['precio'],
-                'descuento': form.cleaned_data['descuento'],
-                'imagen': form.cleaned_data['imagen'],
-                'id_mar': form.cleaned_data['marca'],
-                'id_cate': form.cleaned_data['categoria'],
-                'id_cond': form.cleaned_data['condicion_producto'],  
-            })
+            marca = Marca.objects.get(id_mar=form.cleaned_data['marca'])
+            categoria = Categoria.objects.get(id_cate=form.cleaned_data['categoria'])
+            condicion = Condicion_Producto.objects.get(id_cond=form.cleaned_data['condicion_producto'])
+            producto = Producto.objects.create(
+                nombre=form.cleaned_data['nombre'] ,
+                descripcion = form.cleaned_data['descripcion'],
+                precio = form.cleaned_data['precio'],
+                descuento = form.cleaned_data['descuento'],
+                imagen = 'https://placehold.co/600x400',
+                id_mar= marca,
+                id_cate=categoria,
+                id_cond= condicion,  
+            )
 
-            print(f'Producto {producto["nombre"]} creado.')
+            print(f'Producto  creado.')
             return HttpResponseRedirect("/productos")
+        else:
+            print(f'Hubo un error en el formulario')
+            errors = form.errors
+            context = {
+                'form': form,
+                'errors': errors,
+            }
+            return render(request, 'publicar.html', context)
+
     else:
         form = PublicarProductoForm()
 
-        categorias = Categoria.objects.all()
-        marcas = Marca.objects.all()
-        condiciones = Condicion_Producto.objects.all()
 
         context = {
-            'categorias': categorias,
-            'marcas': marcas,
-            'condiciones': condiciones,
             'form': form,
         }
         return render(request, 'publicar.html', context)

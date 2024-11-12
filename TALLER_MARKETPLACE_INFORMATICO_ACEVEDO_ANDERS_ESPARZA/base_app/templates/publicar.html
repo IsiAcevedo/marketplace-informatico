@@ -145,7 +145,7 @@
         <!-- Contenedor principal -->
         <div class="container">
             {% csrf_token %} 
-            
+
             <!-- Panel izquierdo: carga de imágenes y nombre de publicación -->
             <div class="left-panel">
                 <div class="image-upload" onclick="document.getElementById('file-input').click()">
@@ -154,19 +154,19 @@
                 </div>
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" placeholder="Nombre del  producto">
+                    {{form.nombre}}
                 </div>
                 <div class="form-group">
                     <label for="precio">Precio</label>
-                    <input type="number" id="precio" placeholder="99999">
-                </div>
+                    {{form.precio}}
+                    </div>
                 <div class="form-group">
                     <label for="precio">descuento</label>
-                    <input type="number" id="precio" placeholder="0">
-                </div>
+                    {{form.descuento}}
+                     </div>
                 <div class="form-group">
                     <label for="descripcion">Descripcion</label>
-                    <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+                    {{form.descripcion}}
                 </div>
             </div>
 
@@ -175,32 +175,27 @@
                 <h3>Detalles de Producto</h3>
                 <div class="form-group">
                     <label for="categoria">Categoria</label>
-                    <select id="categoria">
-                        {%for categoria in categorias%}
-                        <option value="{{categoria.id_cate}}">{{categoria.nom_cate}}</option>
-                        {%endfor%}
-                    </select>
+                    {{form.categoria}}
                 </div>
                 <div class="form-group">
                     <label for="marca">Marca</label>
-                    <select id="marca">
-                        {%for marca in marcas%}
-                        <option value="{{marca.id_mar}}">{{marca.nom_mar}}</option>
-                        {%endfor%}
-                    </select>
+                    {{form.marca}}
                 </div>
                 <div class="form-group">
                     <label for="condicion">Condicion</label>
-                    <select id="condicion">
-                        {%for condicion in condiciones%}
-                        <option value="{{condicion.id_cond}}">{{condicion.nom_cond}}</option>
-                        {%endfor%}
-                    </select>
+                    {{form.condicion_producto}}
+
                 </div>
                 <button class="btn-save" type="submit">Guardar</button>
             </div>
         </div>
     </form>
+
+    {%if errors%}
+        <span style="color:red">{{errors}}</span>
+    {%endif%}
+
+ 
 
     <!-- JavaScript para validar la cantidad de archivos -->
    <!--  <script>
